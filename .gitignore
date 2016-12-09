@@ -1,0 +1,10 @@
+**/.DS_Store
+.DS_Store
+target
+**/target/
+.idea
+*.iml
+*.log
+**/*.log
+**/*.iml
+webapp/logs/*

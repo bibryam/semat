@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bs3:grid xsi:schemaLocation="http://isis.apache.org/applib/layout/component http://isis.apache.org/applib/layout/component/component.xsd http://isis.apache.org/applib/layout/grid/bootstrap3 http://isis.apache.org/applib/layout/grid/bootstrap3/bootstrap3.xsd" xmlns:c="http://isis.apache.org/applib/layout/component" xmlns:bs3="http://isis.apache.org/applib/layout/grid/bootstrap3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <bs3:row>
+        <bs3:col span="12" >
+            <c:domainObject/>
+        </bs3:col>
+        <bs3:col span="12" unreferencedActions="true">
+        </bs3:col>
+    </bs3:row>
+    <bs3:row>
+        <bs3:col span="5">
+            <bs3:tabGroup>
+                <bs3:tab name="Project">
+                    <bs3:row>
+                        <bs3:col span="12">
+                            <c:fieldSet name="Properties" unreferencedProperties="true">
+                                <c:property id="code"/>
+                                <c:property id="name"/>
+                                <c:property id="description"/>
+                                <c:action id="update" position="PANEL_DROPDOWN"/>
+                                <!--<c:action id="remove" position="PANEL_DROPDOWN"/>-->
+                            </c:fieldSet>
+                        </bs3:col>
+                    </bs3:row>
+                </bs3:tab>
+                <bs3:tab name="Alpha Status">
+                    <bs3:row>
+                        <bs3:col span="12">
+                            <c:fieldSet name="Customer">
+                                <c:property id="opportunityStatus"/>
+                                <c:property id="stakeholdersStatus"/>
+                            </c:fieldSet>
+                            <c:fieldSet name="Solution">
+                                <c:property id="requirementsStatus"/>
+                                <c:property id="softwareSystemStatus"/>
+                            </c:fieldSet>
+                            <c:fieldSet name="Endeavor">
+                                <c:property id="workStatus"/>
+                                <c:property id="teamStatus"/>
+                                <c:property id="wayOfWorkingStatus"/>
+                            </c:fieldSet>
+                        </bs3:col>
+                    </bs3:row>
+                </bs3:tab>
+                <bs3:tab name="Metadata">
+                    <bs3:row>
+                        <bs3:col span="12">
+                            <c:fieldSet name="Details" id="metadata">
+                                <c:property id="datanucleusIdLong"/>
+                                <c:property id="datanucleusVersionLong"/>
+                                <c:property id="datanucleusVersionTimestamp"/>
+                                <!--<c:property id="atPath" hidden="ALL_TABLES"/>-->
+                            </c:fieldSet>
+                        </bs3:col>
+                    </bs3:row>
+                </bs3:tab>
+            </bs3:tabGroup>
+        </bs3:col>
+        <bs3:col span="7">
+            <bs3:tabGroup unreferencedCollections="true">
+                <!--<bs3:tab name="projectStateViews">-->
+                    <!--<bs3:row>-->
+                        <!--<bs3:col span="12">-->
+                            <!--<c:collection defaultView="table" id="projectStateViews">-->
+                            <!--</c:collection>-->
+                        <!--</bs3:col>-->
+                    <!--</bs3:row>-->
+                <!--</bs3:tab>-->
+            </bs3:tabGroup>
+        </bs3:col>
+    </bs3:row>
+</bs3:grid>
