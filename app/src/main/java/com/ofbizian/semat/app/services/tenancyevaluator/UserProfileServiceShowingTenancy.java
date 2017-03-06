@@ -8,6 +8,7 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.services.userprof.UserProfileService;
 import org.isisaddons.module.security.app.user.MeService;
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancyRepository;
 import org.isisaddons.module.security.dom.user.ApplicationUser;
 
 /**
@@ -25,7 +26,8 @@ public class UserProfileServiceShowingTenancy implements UserProfileService {
 
         final StringBuilder buf = new StringBuilder();
         final String username = applicationUser.getName();
-        final ApplicationTenancy tenancy = applicationUser.getTenancy();
+        final String atPath = applicationUser.getAtPath();
+        final ApplicationTenancy tenancy = applicationTenancyRepository.findByPath(atPath);
 
         buf.append("Hi ");
         buf.append(username);
@@ -39,4 +41,8 @@ public class UserProfileServiceShowingTenancy implements UserProfileService {
 
     @Inject
     private MeService meService;
+
+    @javax.inject.Inject
+    private ApplicationTenancyRepository applicationTenancyRepository;
+
 }

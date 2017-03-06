@@ -33,7 +33,7 @@ public class TenancySwitcher extends AbstractService {
     )
     public HomePageViewModel switchTenancy(final ApplicationTenancy applicationTenancy) {
         final ApplicationUser applicationUser = meService.me();
-        applicationUser.updateTenancy(applicationTenancy);
+        applicationUser.updateAtPath(applicationTenancy.getPath());
         return homePageService.homePage();
     }
 
@@ -48,7 +48,7 @@ public class TenancySwitcher extends AbstractService {
 
     public ApplicationTenancy default0SwitchTenancy() {
         final ApplicationUser applicationUser = meService.me();
-        return applicationUser.getTenancy();
+        return applicationTenancyRepository.findByPath(applicationUser.getAtPath());
     }
     //endregion
 

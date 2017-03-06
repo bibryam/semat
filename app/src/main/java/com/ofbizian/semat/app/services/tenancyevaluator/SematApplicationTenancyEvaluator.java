@@ -1,10 +1,13 @@
 package com.ofbizian.semat.app.services.tenancyevaluator;
 
+import javax.inject.Inject;
+
 import com.ofbizian.semat.dom.domain.AbstractPersistable;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.NatureOfService;
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancyEvaluator;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancyRepository;
 import org.isisaddons.module.security.dom.user.ApplicationUser;
 
 @DomainService(nature = NatureOfService.DOMAIN)
@@ -22,7 +25,8 @@ public class SematApplicationTenancyEvaluator implements ApplicationTenancyEvalu
         }
 
         final AbstractPersistable persistable = (AbstractPersistable) domainObject;
-        final ApplicationTenancy applicationUserTenancy = applicationUser.getTenancy();
+        final String atPath = applicationUser.getAtPath();
+        final ApplicationTenancy applicationUserTenancy = applicationTenancyRepository.findByPath(atPath);
         final ApplicationTenancy persistableApplicationTenancy = persistable.getApplicationTenancy();
 
         if (applicationUserTenancy == null || persistableApplicationTenancy == null) {
@@ -36,4 +40,7 @@ public class SematApplicationTenancyEvaluator implements ApplicationTenancyEvalu
     public String disables(Object domainObject, ApplicationUser applicationUser) {
         return null;
     }
+
+    @Inject
+    private ApplicationTenancyRepository applicationTenancyRepository;
 }

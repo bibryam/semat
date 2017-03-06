@@ -18,7 +18,6 @@ import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.services.user.UserService;
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancyRepository;
-import org.isisaddons.module.security.dom.tenancy.WithApplicationTenancy;
 import org.isisaddons.module.security.dom.user.ApplicationUser;
 import org.isisaddons.module.security.dom.user.ApplicationUserRepository;
 
@@ -39,7 +38,7 @@ import org.isisaddons.module.security.dom.user.ApplicationUserRepository;
         publishing = Publishing.ENABLED,
         auditing = Auditing.ENABLED
 )
-public abstract class AbstractPersistable implements Serializable, Comparable<AbstractPersistable>, WithApplicationTenancy {
+public abstract class AbstractPersistable implements Serializable, Comparable<AbstractPersistable> {
 
      private String applicationTenancyPath;
 
@@ -97,7 +96,8 @@ public abstract class AbstractPersistable implements Serializable, Comparable<Ab
         if (applicationTenancyPath == null) {
             final String username = userService.getUser().getName();
             final ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
-            final ApplicationTenancy applicationTenancy = applicationUser.getTenancy();
+            String atPath = applicationUser.getAtPath();
+            final ApplicationTenancy applicationTenancy = applicationTenancyRepository.findByPathCached(atPath);
             if(applicationTenancy == null) {
                 throw new IllegalStateException(String.format("No application tenancy defined for user '%s'", username));
             }

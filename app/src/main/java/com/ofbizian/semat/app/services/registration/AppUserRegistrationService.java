@@ -57,7 +57,7 @@ public class AppUserRegistrationService extends SecurityModuleAppUserRegistratio
 
         // set up new user custom
         final ApplicationTenancy applicationTenancy = applicationTenancyRepository.newTenancy(username, "/" + username, null);
-        applicationUser.setTenancy(applicationTenancy);
+        applicationUser.setAtPath(applicationTenancy.getPath());
 
         fixtureScripts.runFixtureScript(new SematFixture(username, Arrays.asList(SudoService.ACCESS_ALL_ROLE)), null);
     }

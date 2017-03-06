@@ -16,14 +16,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <isis.version>1.13.1.20161130-1236</isis.version>
+        <isis.version>1.14.0</isis.version>
+        <isis-module-audit-dom.version>1.14.0</isis-module-audit-dom.version>
+        <isis-wicket-fullcalendar2-cpt.version>1.14.0</isis-wicket-fullcalendar2-cpt.version>
+        <isis-module-sessionlogger-dom.version>1.14.0</isis-module-sessionlogger-dom.version>
+        <isis-module-security-dom.version>1.14.0</isis-module-security-dom.version>
         <assertj-core.version>2.4.0</assertj-core.version>
-        <drools-decisiontables.version>6.4.0.Final</drools-decisiontables.version>
-        <optaplanner.version>6.4.0.Final</optaplanner.version>  <!-- 6.4.0.Final-redhat-3 -->
-        <isis-module-audit-dom.version>1.13.0</isis-module-audit-dom.version>
-        <isis-wicket-fullcalendar2-cpt.version>1.13.0</isis-wicket-fullcalendar2-cpt.version>
-        <isis-module-sessionlogger-dom.version>1.13.1</isis-module-sessionlogger-dom.version>
-        <isis-module-security-dom.version>1.13.3</isis-module-security-dom.version>
         <jbcrypt.version>0.3m</jbcrypt.version>
     </properties>
 
