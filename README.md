@@ -11,17 +11,17 @@ See live demo at [http://semat.ofbizian.com](http://semat.ofbizian.com/)
 
 ![project view](https://1.bp.blogspot.com/-t1q9q2xaP6Q/WBmgyZ-7rnI/AAAAAAAAGn8/cKWm8rg-UysGxRQucrxvnnwOmcwxhgO1QCLcB/s1600/Screen%2BShot%2B2016-11-02%2Bat%2B08.05.16%2B1.png)
 
-### (option 1)Build and Run locally with Maven
-
+### (option 1)Build and run locally with Maven
     mvn clean install
     cd webapp
     mvn jetty:run
 
-### (option 2) Build and Run locally with Docker
+### (option 2) Build and run locally with Docker
     docker build --rm -t bibryam/semat .
     docker run -p 8080:8080 bibryam/semat
 
-### (option 3) Build and Run locally with Maven and Docker
+### (option 3) Build and run locally with Maven and Docker
+    mvn clean install
     cd webapp
     mvn clean install docker:build docker:start -Pdocker
 

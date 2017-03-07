@@ -90,7 +90,7 @@ public class DomainAppAppManifest implements AppManifest {
     @Override
     public Map<String, String> getConfigurationProperties() {
         HashMap<String,String> props = Maps.newHashMap();
-        props.put("isis.persistor.datanucleus.install-fixtures","true");
+//        props.put("isis.persistor.datanucleus.install-fixtures","true");
         props.put("isis.reflector.facets.include", "org.isisaddons.module.security.facets.TenantedAuthorizationFacetFactory");
 
         return props;
