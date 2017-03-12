@@ -4,8 +4,7 @@
 
 ### Demo
 
-See live demo at [http://semat.ofbizian.com](http://semat.ofbizian.com/)
-(if the above link is not accessible, try [http://188.166.139.191](http://188.166.139.191) or [http://188.166.148.214](http://188.166.148.214) )
+See live demo at [http://semat.ofbizian.com](http://semat.ofbizian.com/) or try [http://http://146.148.97.68](http://http://146.148.97.68) 
 
 ### Screenshot
 
