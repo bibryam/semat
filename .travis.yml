@@ -1,5 +1,11 @@
 language: java
 jdk:
 - oraclejdk8
+install:
+- java -version && javac -version && mvn -version -B
+before_script:
+script:
+- mvn clean install -B
+
 
 
