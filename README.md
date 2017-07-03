@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/bibryam/semat.svg?branch=master)](https://travis-ci.org/bibryam/semat)
 ### SEMAT - The Essence Kernel Manager
 
 *An application for describing projects using SEMAT/OMG Essence Kernel model*
@@ -47,3 +48,7 @@ The project is developed using [Apache ISIS](http://isis.apache.org/)
 SEMAT Essence Kernel [OMG standard](http://www.omg.org/spec/Essence/1.1/)
 
 ### MIT License
+
+
+ISIS_OPTS="isis.persistor.datanucleus.install-fixtures=true||isis.service.email.sender.address=semat.essence@gmail.com||isis.service.email.sender.password=sematessencekernel||isis.service.email.sender.hostname=smtp.gmail.com||isis.service.email.port=587||isis.service.email.tls.enabled=true"
+
