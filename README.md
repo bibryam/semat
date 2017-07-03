@@ -50,5 +50,4 @@ SEMAT Essence Kernel [OMG standard](http://www.omg.org/spec/Essence/1.1/)
 ### MIT License
 
 
-ISIS_OPTS="isis.persistor.datanucleus.install-fixtures=true||isis.service.email.sender.address=semat.essence@gmail.com||isis.service.email.sender.password=sematessencekernel||isis.service.email.sender.hostname=smtp.gmail.com||isis.service.email.port=587||isis.service.email.tls.enabled=true"
 
