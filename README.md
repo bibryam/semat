@@ -6,7 +6,7 @@
 
 ### Demo
 
-See live demo at [http://semat.ofbizian.com](http://semat.ofbizian.com/) or try [http://http://146.148.97.68](http://http://146.148.97.68) 
+See live demo at [http://semat.ofbizian.com](http://semat.ofbizian.com/) or try [http://146.148.97.68/](http://146.148.97.68/) 
 
 ### Screenshot
 
