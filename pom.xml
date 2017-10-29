@@ -2,10 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ofbizian</groupId>
-    <artifactId>semat</artifactId>
+    <groupId>com.ofbizian.semat</groupId>
+    <artifactId>parent</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <name>Semat Parent</name>
     <packaging>pom</packaging>
 
@@ -21,6 +20,9 @@
         <isis-wicket-fullcalendar2-cpt.version>1.14.0</isis-wicket-fullcalendar2-cpt.version>
         <isis-module-sessionlogger-dom.version>1.14.0</isis-module-sessionlogger-dom.version>
         <isis-module-security-dom.version>1.14.0</isis-module-security-dom.version>
+        <isis-module-settings-dom.version>1.14.0</isis-module-settings-dom.version>
+        <isis-module-command-dom.version>1.14.0</isis-module-command-dom.version>
+        <isis-maven-plugin.version>1.14.0</isis-maven-plugin.version>
         <assertj-core.version>2.4.0</assertj-core.version>
         <jbcrypt.version>0.3m</jbcrypt.version>
     </properties>
