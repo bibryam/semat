@@ -41,6 +41,7 @@
         <dependency>
             <groupId>org.apache.isis.viewer</groupId>
             <artifactId>isis-viewer-wicket-impl</artifactId>
+            <version>1.14.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.isis.core</groupId>
@@ -61,7 +62,7 @@
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc4</version>
+            <version>${postgresql.version}</version>
         </dependency>
     </dependencies>
 
