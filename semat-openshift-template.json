@@ -1,0 +1,696 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "semat",
+        "creationTimestamp": null
+    },
+    "objects": [
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "semat",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "semat"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                }
+            },
+            "spec": {
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChange": {}
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "runPolicy": "Serial",
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/bibryam/semat.git",
+                        "ref": "master"
+                    }
+                },
+                "strategy": {
+                    "type": "Source",
+                    "sourceStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "namespace": "openshift",
+                            "name": "jboss-webserver31-tomcat8-openshift:1.0"
+                        },
+                        "env": [
+                            {
+                                "name": "ARTIFACT_DIR",
+                                "value": "webapp/target/"
+                            },
+                            {
+                                "name": "MAVEN_ARGS_APPEND",
+                                "value": "-pl webapp --also-make"
+                            }
+                        ]
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "semat:latest"
+                    }
+                },
+                "resources": {},
+                "postCommit": {},
+                "nodeSelector": null
+            },
+            "status": {
+                "lastVersion": 0
+            }
+        },
+        {
+            "kind": "Build",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "semat-1",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "semat",
+                    "buildconfig": "semat",
+                    "openshift.io/build-config.name": "semat",
+                    "openshift.io/build.start-policy": "Serial"
+                },
+                "annotations": {
+                    "openshift.io/build-config.name": "semat",
+                    "openshift.io/build.number": "1",
+                    "openshift.io/build.pod-name": "semat-1-build"
+                }
+            },
+            "spec": {
+                "serviceAccount": "builder",
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/bibryam/semat.git",
+                        "ref": "master"
+                    }
+                },
+                "strategy": {
+                    "type": "Source",
+                    "sourceStrategy": {
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756"
+                        },
+                        "env": [
+                            {
+                                "name": "ARTIFACT_DIR",
+                                "value": "webapp/target/"
+                            },
+                            {
+                                "name": "MAVEN_ARGS_APPEND",
+                                "value": "-pl webapp --also-make"
+                            }
+                        ]
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "semat:latest"
+                    },
+                    "pushSecret": {
+                        "name": "builder-dockercfg-wnvpn"
+                    }
+                },
+                "resources": {},
+                "postCommit": {},
+                "nodeSelector": null,
+                "triggeredBy": [
+                    {
+                        "message": "Image change",
+                        "imageChangeBuild": {
+                            "imageID": "registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756",
+                            "fromRef": {
+                                "kind": "ImageStreamTag",
+                                "namespace": "openshift",
+                                "name": "jboss-webserver31-tomcat8-openshift:1.0"
+                            }
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "phase": "New",
+                "outputDockerImageReference": "172.30.17.124:5000/semat/semat:latest",
+                "config": {
+                    "name": "semat"
+                },
+                "output": {},
+                "stages": [
+                    {
+                        "name": "FetchInputs",
+                        "startTime": "2017-12-10T21:58:26Z",
+                        "durationMilliseconds": 807,
+                        "steps": [
+                            {
+                                "name": "FetchGitSource",
+                                "startTime": "2017-12-10T21:58:26Z",
+                                "durationMilliseconds": 807
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "semat",
+                "generation": 1,
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "semat"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                }
+            },
+            "spec": {
+                "lookupPolicy": {
+                    "local": false
+                }
+            },
+            "status": {
+                "dockerImageRepository": ""
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "semat",
+                "generation": 1,
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "semat"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling",
+                    "rollingParams": {
+                        "updatePeriodSeconds": 1,
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 600,
+                        "maxUnavailable": "25%",
+                        "maxSurge": "25%"
+                    },
+                    "resources": {},
+                    "activeDeadlineSeconds": 21600
+                },
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "semat"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "namespace": "semat",
+                                "name": "semat:latest"
+                            }
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "deploymentconfig": "semat"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "semat",
+                            "deploymentconfig": "semat"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "semat",
+                                "image": "semat:latest",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 8443,
+                                        "protocol": "TCP"
+                                    },
+                                    {
+                                        "containerPort": 8778,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "CATALINA_OPTS",
+                                        "value": "-Xmx300m"
+                                    },
+                                    {
+                                        "name": "ISIS_OPTS",
+                                        "value": "isis.persistor.datanucleus.install-fixtures=true||isis.service.email.sender.address=semat@gmail.com||isis.service.email.sender.password=semat||isis.service.email.sender.hostname=smtp.gmail.com||isis.service.email.port=587||isis.service.email.tls.enabled=true"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "imagePullPolicy": "Always"
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {},
+                        "schedulerName": "default-scheduler"
+                    }
+                }
+            },
+            "status": {
+                "latestVersion": 0,
+                "observedGeneration": 0,
+                "replicas": 0,
+                "updatedReplicas": 0,
+                "availableReplicas": 0,
+                "unavailableReplicas": 0
+            }
+        },
+        {
+            "kind": "Route",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "semat",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "semat"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole",
+                    "openshift.io/host.generated": "true"
+                }
+            },
+            "spec": {
+                "host": "semat-semat.193b.starter-ca-central-1.openshiftapps.com",
+                "to": {
+                    "kind": "Service",
+                    "name": "semat",
+                    "weight": 100
+                },
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
+                "wildcardPolicy": "None"
+            },
+            "status": {
+                "ingress": [
+                    {
+                        "host": "semat-semat.193b.starter-ca-central-1.openshiftapps.com",
+                        "routerName": "router",
+                        "conditions": [
+                            {
+                                "type": "Admitted",
+                                "status": "True",
+                                "lastTransitionTime": "2017-12-10T21:58:14Z"
+                            }
+                        ],
+                        "wildcardPolicy": "None",
+                        "routerCanonicalHostname": "elb.193b.starter-ca-central-1.openshiftapps.com"
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "semat",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "semat"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftWebConsole"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "protocol": "TCP",
+                        "port": 8080,
+                        "targetPort": 8080
+                    },
+                    {
+                        "name": "8443-tcp",
+                        "protocol": "TCP",
+                        "port": 8443,
+                        "targetPort": 8443
+                    },
+                    {
+                        "name": "8778-tcp",
+                        "protocol": "TCP",
+                        "port": 8778,
+                        "targetPort": 8778
+                    }
+                ],
+                "selector": {
+                    "deploymentconfig": "semat"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "semat-1-build",
+                "creationTimestamp": null,
+                "labels": {
+                    "openshift.io/build.name": "semat-1"
+                },
+                "annotations": {
+                    "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu, memory request for container sti-build; cpu, memory limit for container sti-build; cpu, memory request for init container git-clone; cpu, memory limit for init container git-clone; cpu, memory request for init container manage-dockerfile; cpu, memory limit for init container manage-dockerfile",
+                    "openshift.io/build.name": "semat-1",
+                    "openshift.io/scc": "privileged",
+                    "pod.alpha.kubernetes.io/init-containers": "[{\"name\":\"git-clone\",\"image\":\"registry.reg-aws.openshift.com:443/openshift3/ose-sti-builder:v3.7.9\",\"command\":[\"openshift-git-clone\"],\"args\":[\"--loglevel=0\"],\"env\":[{\"name\":\"BUILD\",\"value\":\"{\\\"kind\\\":\\\"Build\\\",\\\"apiVersion\\\":\\\"v1\\\",\\\"metadata\\\":{\\\"name\\\":\\\"semat-1\\\",\\\"namespace\\\":\\\"semat\\\",\\\"selfLink\\\":\\\"/apis/build.openshift.io/v1/namespaces/semat/builds/semat-1\\\",\\\"uid\\\":\\\"3859d5b0-ddf5-11e7-8082-02d8407159d1\\\",\\\"resourceVersion\\\":\\\"236398253\\\",\\\"creationTimestamp\\\":\\\"2017-12-10T21:58:14Z\\\",\\\"labels\\\":{\\\"app\\\":\\\"semat\\\",\\\"buildconfig\\\":\\\"semat\\\",\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.start-policy\\\":\\\"Serial\\\"},\\\"annotations\\\":{\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.number\\\":\\\"1\\\"},\\\"ownerReferences\\\":[{\\\"apiVersion\\\":\\\"build.openshift.io/v1\\\",\\\"kind\\\":\\\"BuildConfig\\\",\\\"name\\\":\\\"semat\\\",\\\"uid\\\":\\\"385130c3-ddf5-11e7-81eb-02ac3a1f9d61\\\",\\\"controller\\\":true}]},\\\"spec\\\":{\\\"serviceAccount\\\":\\\"builder\\\",\\\"source\\\":{\\\"type\\\":\\\"Git\\\",\\\"git\\\":{\\\"uri\\\":\\\"https://github.com/bibryam/semat.git\\\",\\\"ref\\\":\\\"master\\\"}},\\\"strategy\\\":{\\\"type\\\":\\\"Source\\\",\\\"sourceStrategy\\\":{\\\"from\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\"},\\\"env\\\":[{\\\"name\\\":\\\"ARTIFACT_DIR\\\",\\\"value\\\":\\\"webapp/target/\\\"},{\\\"name\\\":\\\"MAVEN_ARGS_APPEND\\\",\\\"value\\\":\\\"-pl webapp --also-make\\\"}],\\\"forcePull\\\":true}},\\\"output\\\":{\\\"to\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\"},\\\"pushSecret\\\":{\\\"name\\\":\\\"builder-dockercfg-wnvpn\\\"}},\\\"resources\\\":{},\\\"postCommit\\\":{},\\\"nodeSelector\\\":null,\\\"triggeredBy\\\":[{\\\"message\\\":\\\"Image change\\\",\\\"imageChangeBuild\\\":{\\\"imageID\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\",\\\"fromRef\\\":{\\\"kind\\\":\\\"ImageStreamTag\\\",\\\"namespace\\\":\\\"openshift\\\",\\\"name\\\":\\\"jboss-webserver31-tomcat8-openshift:1.0\\\"}}}]},\\\"status\\\":{\\\"phase\\\":\\\"New\\\",\\\"outputDockerImageReference\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\",\\\"config\\\":{\\\"kind\\\":\\\"BuildConfig\\\",\\\"namespace\\\":\\\"semat\\\",\\\"name\\\":\\\"semat\\\"},\\\"output\\\":{}}}\\n\"},{\"name\":\"SOURCE_REPOSITORY\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_URI\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_REF\",\"value\":\"master\"},{\"name\":\"ORIGIN_VERSION\",\"value\":\"v3.7.9\"},{\"name\":\"ALLOWED_UIDS\",\"value\":\"1-\"},{\"name\":\"DROP_CAPS\",\"value\":\"KILL,MKNOD,SETGID,SETUID\"}],\"resources\":{\"limits\":{\"cpu\":\"1\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"60m\",\"memory\":\"307Mi\"}},\"volumeMounts\":[{\"name\":\"buildworkdir\",\"mountPath\":\"/tmp/build\"},{\"name\":\"builder-token-g5vds\",\"readOnly\":true,\"mountPath\":\"/var/run/secrets/kubernetes.io/serviceaccount\"}],\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"FallbackToLogsOnError\",\"imagePullPolicy\":\"Always\",\"securityContext\":{\"privileged\":false}},{\"name\":\"manage-dockerfile\",\"image\":\"registry.reg-aws.openshift.com:443/openshift3/ose-sti-builder:v3.7.9\",\"command\":[\"openshift-manage-dockerfile\"],\"args\":[\"--loglevel=0\"],\"env\":[{\"name\":\"BUILD\",\"value\":\"{\\\"kind\\\":\\\"Build\\\",\\\"apiVersion\\\":\\\"v1\\\",\\\"metadata\\\":{\\\"name\\\":\\\"semat-1\\\",\\\"namespace\\\":\\\"semat\\\",\\\"selfLink\\\":\\\"/apis/build.openshift.io/v1/namespaces/semat/builds/semat-1\\\",\\\"uid\\\":\\\"3859d5b0-ddf5-11e7-8082-02d8407159d1\\\",\\\"resourceVersion\\\":\\\"236398253\\\",\\\"creationTimestamp\\\":\\\"2017-12-10T21:58:14Z\\\",\\\"labels\\\":{\\\"app\\\":\\\"semat\\\",\\\"buildconfig\\\":\\\"semat\\\",\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.start-policy\\\":\\\"Serial\\\"},\\\"annotations\\\":{\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.number\\\":\\\"1\\\"},\\\"ownerReferences\\\":[{\\\"apiVersion\\\":\\\"build.openshift.io/v1\\\",\\\"kind\\\":\\\"BuildConfig\\\",\\\"name\\\":\\\"semat\\\",\\\"uid\\\":\\\"385130c3-ddf5-11e7-81eb-02ac3a1f9d61\\\",\\\"controller\\\":true}]},\\\"spec\\\":{\\\"serviceAccount\\\":\\\"builder\\\",\\\"source\\\":{\\\"type\\\":\\\"Git\\\",\\\"git\\\":{\\\"uri\\\":\\\"https://github.com/bibryam/semat.git\\\",\\\"ref\\\":\\\"master\\\"}},\\\"strategy\\\":{\\\"type\\\":\\\"Source\\\",\\\"sourceStrategy\\\":{\\\"from\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\"},\\\"env\\\":[{\\\"name\\\":\\\"ARTIFACT_DIR\\\",\\\"value\\\":\\\"webapp/target/\\\"},{\\\"name\\\":\\\"MAVEN_ARGS_APPEND\\\",\\\"value\\\":\\\"-pl webapp --also-make\\\"}],\\\"forcePull\\\":true}},\\\"output\\\":{\\\"to\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\"},\\\"pushSecret\\\":{\\\"name\\\":\\\"builder-dockercfg-wnvpn\\\"}},\\\"resources\\\":{},\\\"postCommit\\\":{},\\\"nodeSelector\\\":null,\\\"triggeredBy\\\":[{\\\"message\\\":\\\"Image change\\\",\\\"imageChangeBuild\\\":{\\\"imageID\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\",\\\"fromRef\\\":{\\\"kind\\\":\\\"ImageStreamTag\\\",\\\"namespace\\\":\\\"openshift\\\",\\\"name\\\":\\\"jboss-webserver31-tomcat8-openshift:1.0\\\"}}}]},\\\"status\\\":{\\\"phase\\\":\\\"New\\\",\\\"outputDockerImageReference\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\",\\\"config\\\":{\\\"kind\\\":\\\"BuildConfig\\\",\\\"namespace\\\":\\\"semat\\\",\\\"name\\\":\\\"semat\\\"},\\\"output\\\":{}}}\\n\"},{\"name\":\"SOURCE_REPOSITORY\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_URI\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_REF\",\"value\":\"master\"},{\"name\":\"ORIGIN_VERSION\",\"value\":\"v3.7.9\"},{\"name\":\"ALLOWED_UIDS\",\"value\":\"1-\"},{\"name\":\"DROP_CAPS\",\"value\":\"KILL,MKNOD,SETGID,SETUID\"}],\"resources\":{\"limits\":{\"cpu\":\"1\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"60m\",\"memory\":\"307Mi\"}},\"volumeMounts\":[{\"name\":\"buildworkdir\",\"mountPath\":\"/tmp/build\"},{\"name\":\"builder-token-g5vds\",\"readOnly\":true,\"mountPath\":\"/var/run/secrets/kubernetes.io/serviceaccount\"}],\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"FallbackToLogsOnError\",\"imagePullPolicy\":\"Always\",\"securityContext\":{\"privileged\":false}}]",
+                    "pod.beta.kubernetes.io/init-containers": "[{\"name\":\"git-clone\",\"image\":\"registry.reg-aws.openshift.com:443/openshift3/ose-sti-builder:v3.7.9\",\"command\":[\"openshift-git-clone\"],\"args\":[\"--loglevel=0\"],\"env\":[{\"name\":\"BUILD\",\"value\":\"{\\\"kind\\\":\\\"Build\\\",\\\"apiVersion\\\":\\\"v1\\\",\\\"metadata\\\":{\\\"name\\\":\\\"semat-1\\\",\\\"namespace\\\":\\\"semat\\\",\\\"selfLink\\\":\\\"/apis/build.openshift.io/v1/namespaces/semat/builds/semat-1\\\",\\\"uid\\\":\\\"3859d5b0-ddf5-11e7-8082-02d8407159d1\\\",\\\"resourceVersion\\\":\\\"236398253\\\",\\\"creationTimestamp\\\":\\\"2017-12-10T21:58:14Z\\\",\\\"labels\\\":{\\\"app\\\":\\\"semat\\\",\\\"buildconfig\\\":\\\"semat\\\",\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.start-policy\\\":\\\"Serial\\\"},\\\"annotations\\\":{\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.number\\\":\\\"1\\\"},\\\"ownerReferences\\\":[{\\\"apiVersion\\\":\\\"build.openshift.io/v1\\\",\\\"kind\\\":\\\"BuildConfig\\\",\\\"name\\\":\\\"semat\\\",\\\"uid\\\":\\\"385130c3-ddf5-11e7-81eb-02ac3a1f9d61\\\",\\\"controller\\\":true}]},\\\"spec\\\":{\\\"serviceAccount\\\":\\\"builder\\\",\\\"source\\\":{\\\"type\\\":\\\"Git\\\",\\\"git\\\":{\\\"uri\\\":\\\"https://github.com/bibryam/semat.git\\\",\\\"ref\\\":\\\"master\\\"}},\\\"strategy\\\":{\\\"type\\\":\\\"Source\\\",\\\"sourceStrategy\\\":{\\\"from\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\"},\\\"env\\\":[{\\\"name\\\":\\\"ARTIFACT_DIR\\\",\\\"value\\\":\\\"webapp/target/\\\"},{\\\"name\\\":\\\"MAVEN_ARGS_APPEND\\\",\\\"value\\\":\\\"-pl webapp --also-make\\\"}],\\\"forcePull\\\":true}},\\\"output\\\":{\\\"to\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\"},\\\"pushSecret\\\":{\\\"name\\\":\\\"builder-dockercfg-wnvpn\\\"}},\\\"resources\\\":{},\\\"postCommit\\\":{},\\\"nodeSelector\\\":null,\\\"triggeredBy\\\":[{\\\"message\\\":\\\"Image change\\\",\\\"imageChangeBuild\\\":{\\\"imageID\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\",\\\"fromRef\\\":{\\\"kind\\\":\\\"ImageStreamTag\\\",\\\"namespace\\\":\\\"openshift\\\",\\\"name\\\":\\\"jboss-webserver31-tomcat8-openshift:1.0\\\"}}}]},\\\"status\\\":{\\\"phase\\\":\\\"New\\\",\\\"outputDockerImageReference\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\",\\\"config\\\":{\\\"kind\\\":\\\"BuildConfig\\\",\\\"namespace\\\":\\\"semat\\\",\\\"name\\\":\\\"semat\\\"},\\\"output\\\":{}}}\\n\"},{\"name\":\"SOURCE_REPOSITORY\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_URI\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_REF\",\"value\":\"master\"},{\"name\":\"ORIGIN_VERSION\",\"value\":\"v3.7.9\"},{\"name\":\"ALLOWED_UIDS\",\"value\":\"1-\"},{\"name\":\"DROP_CAPS\",\"value\":\"KILL,MKNOD,SETGID,SETUID\"}],\"resources\":{\"limits\":{\"cpu\":\"1\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"60m\",\"memory\":\"307Mi\"}},\"volumeMounts\":[{\"name\":\"buildworkdir\",\"mountPath\":\"/tmp/build\"},{\"name\":\"builder-token-g5vds\",\"readOnly\":true,\"mountPath\":\"/var/run/secrets/kubernetes.io/serviceaccount\"}],\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"FallbackToLogsOnError\",\"imagePullPolicy\":\"Always\",\"securityContext\":{\"privileged\":false}},{\"name\":\"manage-dockerfile\",\"image\":\"registry.reg-aws.openshift.com:443/openshift3/ose-sti-builder:v3.7.9\",\"command\":[\"openshift-manage-dockerfile\"],\"args\":[\"--loglevel=0\"],\"env\":[{\"name\":\"BUILD\",\"value\":\"{\\\"kind\\\":\\\"Build\\\",\\\"apiVersion\\\":\\\"v1\\\",\\\"metadata\\\":{\\\"name\\\":\\\"semat-1\\\",\\\"namespace\\\":\\\"semat\\\",\\\"selfLink\\\":\\\"/apis/build.openshift.io/v1/namespaces/semat/builds/semat-1\\\",\\\"uid\\\":\\\"3859d5b0-ddf5-11e7-8082-02d8407159d1\\\",\\\"resourceVersion\\\":\\\"236398253\\\",\\\"creationTimestamp\\\":\\\"2017-12-10T21:58:14Z\\\",\\\"labels\\\":{\\\"app\\\":\\\"semat\\\",\\\"buildconfig\\\":\\\"semat\\\",\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.start-policy\\\":\\\"Serial\\\"},\\\"annotations\\\":{\\\"openshift.io/build-config.name\\\":\\\"semat\\\",\\\"openshift.io/build.number\\\":\\\"1\\\"},\\\"ownerReferences\\\":[{\\\"apiVersion\\\":\\\"build.openshift.io/v1\\\",\\\"kind\\\":\\\"BuildConfig\\\",\\\"name\\\":\\\"semat\\\",\\\"uid\\\":\\\"385130c3-ddf5-11e7-81eb-02ac3a1f9d61\\\",\\\"controller\\\":true}]},\\\"spec\\\":{\\\"serviceAccount\\\":\\\"builder\\\",\\\"source\\\":{\\\"type\\\":\\\"Git\\\",\\\"git\\\":{\\\"uri\\\":\\\"https://github.com/bibryam/semat.git\\\",\\\"ref\\\":\\\"master\\\"}},\\\"strategy\\\":{\\\"type\\\":\\\"Source\\\",\\\"sourceStrategy\\\":{\\\"from\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\"},\\\"env\\\":[{\\\"name\\\":\\\"ARTIFACT_DIR\\\",\\\"value\\\":\\\"webapp/target/\\\"},{\\\"name\\\":\\\"MAVEN_ARGS_APPEND\\\",\\\"value\\\":\\\"-pl webapp --also-make\\\"}],\\\"forcePull\\\":true}},\\\"output\\\":{\\\"to\\\":{\\\"kind\\\":\\\"DockerImage\\\",\\\"name\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\"},\\\"pushSecret\\\":{\\\"name\\\":\\\"builder-dockercfg-wnvpn\\\"}},\\\"resources\\\":{},\\\"postCommit\\\":{},\\\"nodeSelector\\\":null,\\\"triggeredBy\\\":[{\\\"message\\\":\\\"Image change\\\",\\\"imageChangeBuild\\\":{\\\"imageID\\\":\\\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\\\",\\\"fromRef\\\":{\\\"kind\\\":\\\"ImageStreamTag\\\",\\\"namespace\\\":\\\"openshift\\\",\\\"name\\\":\\\"jboss-webserver31-tomcat8-openshift:1.0\\\"}}}]},\\\"status\\\":{\\\"phase\\\":\\\"New\\\",\\\"outputDockerImageReference\\\":\\\"172.30.17.124:5000/semat/semat:latest\\\",\\\"config\\\":{\\\"kind\\\":\\\"BuildConfig\\\",\\\"namespace\\\":\\\"semat\\\",\\\"name\\\":\\\"semat\\\"},\\\"output\\\":{}}}\\n\"},{\"name\":\"SOURCE_REPOSITORY\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_URI\",\"value\":\"https://github.com/bibryam/semat.git\"},{\"name\":\"SOURCE_REF\",\"value\":\"master\"},{\"name\":\"ORIGIN_VERSION\",\"value\":\"v3.7.9\"},{\"name\":\"ALLOWED_UIDS\",\"value\":\"1-\"},{\"name\":\"DROP_CAPS\",\"value\":\"KILL,MKNOD,SETGID,SETUID\"}],\"resources\":{\"limits\":{\"cpu\":\"1\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"60m\",\"memory\":\"307Mi\"}},\"volumeMounts\":[{\"name\":\"buildworkdir\",\"mountPath\":\"/tmp/build\"},{\"name\":\"builder-token-g5vds\",\"readOnly\":true,\"mountPath\":\"/var/run/secrets/kubernetes.io/serviceaccount\"}],\"terminationMessagePath\":\"/dev/termination-log\",\"terminationMessagePolicy\":\"FallbackToLogsOnError\",\"imagePullPolicy\":\"Always\",\"securityContext\":{\"privileged\":false}}]"
+                },
+                "ownerReferences": [
+                    {
+                        "apiVersion": "build.openshift.io/v1",
+                        "kind": "Build",
+                        "name": "semat-1",
+                        "uid": "3859d5b0-ddf5-11e7-8082-02d8407159d1",
+                        "controller": true
+                    }
+                ]
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "buildworkdir",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "docker-socket",
+                        "hostPath": {
+                            "path": "/var/run/docker.sock"
+                        }
+                    },
+                    {
+                        "name": "crio-socket",
+                        "hostPath": {
+                            "path": "/var/run/crio.sock"
+                        }
+                    },
+                    {
+                        "name": "builder-dockercfg-wnvpn-push",
+                        "secret": {
+                            "secretName": "builder-dockercfg-wnvpn",
+                            "defaultMode": 384
+                        }
+                    },
+                    {
+                        "name": "builder-token-g5vds",
+                        "secret": {
+                            "secretName": "builder-token-g5vds",
+                            "defaultMode": 420
+                        }
+                    }
+                ],
+                "initContainers": [
+                    {
+                        "name": "git-clone",
+                        "image": "registry.reg-aws.openshift.com:443/openshift3/ose-sti-builder:v3.7.9",
+                        "command": [
+                            "openshift-git-clone"
+                        ],
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"v1\",\"metadata\":{\"name\":\"semat-1\",\"namespace\":\"semat\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/semat/builds/semat-1\",\"uid\":\"3859d5b0-ddf5-11e7-8082-02d8407159d1\",\"resourceVersion\":\"236398253\",\"creationTimestamp\":\"2017-12-10T21:58:14Z\",\"labels\":{\"app\":\"semat\",\"buildconfig\":\"semat\",\"openshift.io/build-config.name\":\"semat\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"semat\",\"openshift.io/build.number\":\"1\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"semat\",\"uid\":\"385130c3-ddf5-11e7-81eb-02ac3a1f9d61\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/bibryam/semat.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\"},\"env\":[{\"name\":\"ARTIFACT_DIR\",\"value\":\"webapp/target/\"},{\"name\":\"MAVEN_ARGS_APPEND\",\"value\":\"-pl webapp --also-make\"}],\"forcePull\":true}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.17.124:5000/semat/semat:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-wnvpn\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Image change\",\"imageChangeBuild\":{\"imageID\":\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\",\"fromRef\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"openshift\",\"name\":\"jboss-webserver31-tomcat8-openshift:1.0\"}}}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.17.124:5000/semat/semat:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"semat\",\"name\":\"semat\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/bibryam/semat.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/bibryam/semat.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ORIGIN_VERSION",
+                                "value": "v3.7.9"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "512Mi"
+                            },
+                            "requests": {
+                                "cpu": "60m",
+                                "memory": "307Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "buildworkdir",
+                                "mountPath": "/tmp/build"
+                            },
+                            {
+                                "name": "builder-token-g5vds",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "privileged": false
+                        }
+                    },
+                    {
+                        "name": "manage-dockerfile",
+                        "image": "registry.reg-aws.openshift.com:443/openshift3/ose-sti-builder:v3.7.9",
+                        "command": [
+                            "openshift-manage-dockerfile"
+                        ],
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"v1\",\"metadata\":{\"name\":\"semat-1\",\"namespace\":\"semat\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/semat/builds/semat-1\",\"uid\":\"3859d5b0-ddf5-11e7-8082-02d8407159d1\",\"resourceVersion\":\"236398253\",\"creationTimestamp\":\"2017-12-10T21:58:14Z\",\"labels\":{\"app\":\"semat\",\"buildconfig\":\"semat\",\"openshift.io/build-config.name\":\"semat\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"semat\",\"openshift.io/build.number\":\"1\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"semat\",\"uid\":\"385130c3-ddf5-11e7-81eb-02ac3a1f9d61\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/bibryam/semat.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\"},\"env\":[{\"name\":\"ARTIFACT_DIR\",\"value\":\"webapp/target/\"},{\"name\":\"MAVEN_ARGS_APPEND\",\"value\":\"-pl webapp --also-make\"}],\"forcePull\":true}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.17.124:5000/semat/semat:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-wnvpn\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Image change\",\"imageChangeBuild\":{\"imageID\":\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\",\"fromRef\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"openshift\",\"name\":\"jboss-webserver31-tomcat8-openshift:1.0\"}}}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.17.124:5000/semat/semat:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"semat\",\"name\":\"semat\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/bibryam/semat.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/bibryam/semat.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ORIGIN_VERSION",
+                                "value": "v3.7.9"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "512Mi"
+                            },
+                            "requests": {
+                                "cpu": "60m",
+                                "memory": "307Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "buildworkdir",
+                                "mountPath": "/tmp/build"
+                            },
+                            {
+                                "name": "builder-token-g5vds",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "privileged": false
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "sti-build",
+                        "image": "registry.reg-aws.openshift.com:443/openshift3/ose-sti-builder:v3.7.9",
+                        "command": [
+                            "openshift-sti-build"
+                        ],
+                        "args": [
+                            "--loglevel=0"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"v1\",\"metadata\":{\"name\":\"semat-1\",\"namespace\":\"semat\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/semat/builds/semat-1\",\"uid\":\"3859d5b0-ddf5-11e7-8082-02d8407159d1\",\"resourceVersion\":\"236398253\",\"creationTimestamp\":\"2017-12-10T21:58:14Z\",\"labels\":{\"app\":\"semat\",\"buildconfig\":\"semat\",\"openshift.io/build-config.name\":\"semat\",\"openshift.io/build.start-policy\":\"Serial\"},\"annotations\":{\"openshift.io/build-config.name\":\"semat\",\"openshift.io/build.number\":\"1\"},\"ownerReferences\":[{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"name\":\"semat\",\"uid\":\"385130c3-ddf5-11e7-81eb-02ac3a1f9d61\",\"controller\":true}]},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/bibryam/semat.git\",\"ref\":\"master\"}},\"strategy\":{\"type\":\"Source\",\"sourceStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\"},\"env\":[{\"name\":\"ARTIFACT_DIR\",\"value\":\"webapp/target/\"},{\"name\":\"MAVEN_ARGS_APPEND\",\"value\":\"-pl webapp --also-make\"}],\"forcePull\":true}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.17.124:5000/semat/semat:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-wnvpn\"}},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"triggeredBy\":[{\"message\":\"Image change\",\"imageChangeBuild\":{\"imageID\":\"registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat8-openshift@sha256:6b78482f17da060b55ba6c92064a9235b9b38fff0eaaccc6923e23e597d66756\",\"fromRef\":{\"kind\":\"ImageStreamTag\",\"namespace\":\"openshift\",\"name\":\"jboss-webserver31-tomcat8-openshift:1.0\"}}}]},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.17.124:5000/semat/semat:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"semat\",\"name\":\"semat\"},\"output\":{}}}\n"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/bibryam/semat.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/bibryam/semat.git"
+                            },
+                            {
+                                "name": "SOURCE_REF",
+                                "value": "master"
+                            },
+                            {
+                                "name": "ORIGIN_VERSION",
+                                "value": "v3.7.9"
+                            },
+                            {
+                                "name": "ALLOWED_UIDS",
+                                "value": "1-"
+                            },
+                            {
+                                "name": "DROP_CAPS",
+                                "value": "KILL,MKNOD,SETGID,SETUID"
+                            },
+                            {
+                                "name": "PUSH_DOCKERCFG_PATH",
+                                "value": "/var/run/secrets/openshift.io/push"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "512Mi"
+                            },
+                            "requests": {
+                                "cpu": "60m",
+                                "memory": "307Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "buildworkdir",
+                                "mountPath": "/tmp/build"
+                            },
+                            {
+                                "name": "docker-socket",
+                                "mountPath": "/var/run/docker.sock"
+                            },
+                            {
+                                "name": "crio-socket",
+                                "mountPath": "/var/run/crio.sock"
+                            },
+                            {
+                                "name": "builder-dockercfg-wnvpn-push",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/openshift.io/push"
+                            },
+                            {
+                                "name": "builder-token-g5vds",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "privileged": true
+                        }
+                    }
+                ],
+                "restartPolicy": "Never",
+                "terminationGracePeriodSeconds": 30,
+                "activeDeadlineSeconds": 3600,
+                "dnsPolicy": "ClusterFirst",
+                "nodeSelector": {
+                    "type": "compute"
+                },
+                "serviceAccountName": "builder",
+                "serviceAccount": "builder",
+                "nodeName": "ip-172-31-16-186.ca-central-1.compute.internal",
+                "securityContext": {},
+                "imagePullSecrets": [
+                    {
+                        "name": "builder-dockercfg-wnvpn"
+                    }
+                ],
+                "schedulerName": "default-scheduler"
+            },
+            "status": {
+                "phase": "Pending",
+                "qosClass": "Burstable"
+            }
+        }
+    ]
+}

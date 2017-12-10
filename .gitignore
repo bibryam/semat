@@ -8,3 +8,4 @@ target
 **/*.log
 **/*.iml
 webapp/logs/*
+datanucleus.log
