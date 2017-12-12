@@ -6,7 +6,7 @@
 
 ### Live Demo on Red Hat OpenShift
 
-See live demo running on a free OpenShift Online account at [http://semat.ofbizian.com](http://semat.ofbizian.com/) or direct URL [http://semat-semat.1d35.starter-us-east-1.openshiftapps.com/](http://semat-semat.1d35.starter-us-east-1.openshiftapps.com/) 
+See live demo running on a free OpenShift Online account at [http://semat.ofbizian.com](http://semat.ofbizian.com/) or direct URL [http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/](http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/) 
 
 ### Screenshot
 
@@ -14,20 +14,23 @@ See live demo running on a free OpenShift Online account at [http://semat.ofbizi
 ![project diagram](https://4.bp.blogspot.com/-mRO2ko-xDPw/Wi29Q4tRY8I/AAAAAAAAJzU/Z0yzBAmxTcY1xi_CKjChf3J2Kc0IM3ifwCLcBGAs/s1600/semat.png)
 
 ### Application Features
- - Automatic Apache Wicket based UI generation from domain model
- - Automatic REST API generation from the same domain model
+ - Manage multiple projects per tenant
  - Manage project Alpha states
- - Alpha state spider/radar diagram
- - Custom Essence Alpha states per tenancy
+ - Custom Essence Alpha state list per tenancy
  - Custom Essence Checklist items per tenancy
+ - Alpha state spider/radar diagram
 
 ### Apache Isis Features used
+ - Automatic Apache Wicket based UI generation from domain model
+ - Automatic REST API generation from the same domain model
  - Self Signup/Registration
  - Multi Tenancy
  - LDAP integration
  - Auditing
  - Session logging
  - Internationalization
+
+### Build and Run
 
 #### (option 1) Local: build and run with Maven
     mvn clean install
@@ -59,7 +62,7 @@ Install OpenShift client locally (oc) and login to OpenShift. The following comm
     oc expose service semat
 
 The process takes some time as it has to download the Docker images and there are not much free resources on a free tier account. Notice also we limit Tomcat heap size in order to run in a Docker container with 512MB memory.
-After few minutes, you should be able to access your SEMAT instance on a URL like this one:URL [http://semat-semat.1d35.starter-us-east-1.openshiftapps.com/](http://semat-semat.1d35.starter-us-east-1.openshiftapps.com/)
+After few minutes, you should be able to access your SEMAT instance on a URL like this one:URL [http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/](http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/)
 
 ### (option 5) OpenShift Online: Deploy to OpenShift from source code
 If you do not trust Docker images build by others (you should not!) then you can build your own Docker image as shown above with options 2 and 3 and push it your own docker registry and create the app from it: oc new-app your_name/semat:latest -e CATALINA_OPTS=“-Xmx300m”
@@ -74,11 +77,5 @@ Or use the template provided here:
       
 Using source to image approach allows setting up webhooks, have a Red Hat base image, have jolokia added, memory configuration done, etc.
  
-### Further Reading
-The project is developed using [Apache ISIS](http://isis.apache.org/)
-
-SEMAT Essence Kernel [OMG standard](http://www.omg.org/spec/Essence/1.1/)
-
-### MIT License
 
 
