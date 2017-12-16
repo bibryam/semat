@@ -6,7 +6,7 @@
 
 ### Live Demo on Red Hat OpenShift
 
-See live demo running on a free OpenShift Online account at [http://semat.ofbizian.com](http://semat.ofbizian.com/) or direct URL [http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/](http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/) 
+See live demo running on a free OpenShift Online account at [http://semat.ofbizian.com](http://semat.ofbizian.com/) or direct URL (may be outdated) [http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/](http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/) 
 
 ### Screenshot
 
