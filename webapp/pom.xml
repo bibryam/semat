@@ -79,7 +79,7 @@
                     <plugin>
                         <artifactId>maven-war-plugin</artifactId>
                         <configuration>
-                            <warName>semat</warName>
+                            <warName>ROOT</warName>
                             <archive>
                                 <manifest>
                                     <addClasspath>false</addClasspath>
@@ -254,7 +254,8 @@
                                         <cleanup>false</cleanup>
                                         <optimise>true</optimise>
                                         <!--<from>tomcat:9.0.0.M11-alpine</from>-->
-                                        <from>tomcat:7-jre8-alpine</from>
+                                        <!--<from>tomcat:7-jre8-alpine</from>-->
+                                        <from>tomcat:9.0.2-alpine</from>
                                         <maintainer>Bilgin Ibryam</maintainer>
                                         <tags>
                                             <tag>latest</tag>

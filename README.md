@@ -62,7 +62,7 @@ Install OpenShift client locally (oc) and login to OpenShift. The following comm
     oc expose service semat
 
 The process takes some time as it has to download the Docker images and there are not much free resources on a free tier account. Notice also we limit Tomcat heap size in order to run in a Docker container with 512MB memory.
-After few minutes, you should be able to access your SEMAT instance on a URL like this one:URL [http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/](http://semat-semat.193b.starter-ca-central-1.openshiftapps.com/)
+After few minutes, you should be able to access your SEMAT instance.
 
 ### (option 5) OpenShift Online: Deploy to OpenShift from source code
 If you do not trust Docker images build by others (you should not!) then you can build your own Docker image as shown above with options 2 and 3 and push it your own docker registry and create the app from it: oc new-app your_name/semat:latest -e CATALINA_OPTS=“-Xmx300m”
