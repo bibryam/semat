@@ -2,7 +2,7 @@
 [![CocoaPods](https://img.shields.io/cocoapods/l/AFNetworking.svg)]()
 ### SEMAT - The Essence Kernel Manager
 
-*A showcase application to demonstrate capabilities of [Apache ISIS](http://isis.apache.org/) project by implementing [OMG SEMAT Essence Kernel](http://www.omg.org/spec/Essence/1.0/PDF) model and running it on Red Hat OpenShift*
+*A showcase application to demonstrate capabilities of [Apache Isis](http://isis.apache.org/) project by implementing [OMG SEMAT Essence Kernel](http://www.omg.org/spec/Essence/1.0/PDF) model and running it on Red Hat OpenShift*
 
 ### Live Demo on Red Hat OpenShift
 
